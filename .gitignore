@@ -1,0 +1,34 @@
+# WordPress
+wp-config.php
+wp-config-local.php
+.htaccess
+
+# Uploads and caches
+wp-content/uploads/
+!wp-content/uploads/starvista-stock/
+!wp-content/uploads/starvista-stock/**
+wp-content/cache/
+wp-content/upgrade/
+wp-content/backup-db/
+wp-content/advanced-cache.php
+wp-content/wp-cache-config.php
+wp-content/debug.log
+
+# Dependencies we download during setup
+wordpress.zip
+elementor.zip
+hello-elementor.zip
+wp-cli.phar
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+__pycache__/
+*.pyc
+
+# Env / secrets
+.env
+.env.*
+!.env.example

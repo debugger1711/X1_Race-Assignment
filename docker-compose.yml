@@ -1,0 +1,40 @@
+services:
+  db:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_DATABASE: starvista
+      MYSQL_USER: starvista
+      MYSQL_PASSWORD: starvista
+      MYSQL_ROOT_PASSWORD: starvista_root
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-ustarvista", "-pstarvista"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  wordpress:
+    image: wordpress:php8.2-apache
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: starvista
+      WORDPRESS_DB_PASSWORD: starvista
+      WORDPRESS_DB_NAME: starvista
+      WORDPRESS_DEBUG: 0
+    volumes:
+      - wordpress_data:/var/www/html
+      - ./wp-content/themes/starvista:/var/www/html/wp-content/themes/starvista
+      - ./wp-content/plugins/starvista-demo:/var/www/html/wp-content/plugins/starvista-demo
+      - ./wp-content/plugins/elementor:/var/www/html/wp-content/plugins/elementor
+      - ./wp-content/themes/hello-elementor:/var/www/html/wp-content/themes/hello-elementor
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  db_data:
+  wordpress_data:
